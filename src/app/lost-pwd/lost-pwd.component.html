@@ -1,0 +1,21 @@
+<div class="container" style="max-width: 100%; min-height: 100vh; background-color: #dae0e6; padding-bottom: 20px">
+  <div style="padding-top: 40px">
+    <div class="col col-md-8" style="margin: auto; padding: 20px; background-color: white; border-radius: 5px">
+      <div>
+        <h1 id="control-5689247">Lost password</h1></div>
+      <div  style="padding-top: 20px">
+        <label for="pwd">Email</label>
+        <input [(ngModel)]="email" minlength="6" type="email" placeholder="Email" class="form-control" name="pwd" id="pwd" required>
+        <div class="alert-danger" *ngIf="email.length === 0">Email is required</div>
+        <div class="alert-danger" *ngIf="!isEmail(email)">
+          Email must be a valid email address
+        </div>
+        <br>
+        <button mat-raised-button color="accent"
+                style="background-color: #FFC500; float: right" [disabled]="!isEmail(email) || email.length === 0" (click)="lostPassword()">Change my password</button>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>

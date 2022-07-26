@@ -1,0 +1,51 @@
+<div>
+  <mat-toolbar>
+    <a href="">
+      <img
+        src="https://cdn.discordapp.com/attachments/951110771704725595/970002102711644170/Capture.PNG">
+    </a>
+    <div class="search-input">
+      <form class="example-form">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-icon style="padding: 0" (click)="fullSearch()">search</mat-icon>
+          <input style="padding-left: 5%"
+                  type="text"
+                 placeholder="Search in codeup..."
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                 [(ngModel)]="searchString"
+                 (keyup)="lightSearch()"
+                 (keyup.enter)="fullSearch()">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of options" [value]="option.post.title" (click)="goToPost(option.post.id)">
+              {{option.post.title }} - by {{option.user}} ({{option.forum}})
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="align-right">
+      <button *ngIf="!loggedUser" style="background-color: #FFC500" mat-raised-button color="accent" (click)="openLogin()">Login</button>
+      <button *ngIf="!loggedUser" style="background-color: #FF9600" mat-raised-button color="accent" (click)="openSignin()">Sign up</button>
+      <div ngbDropdown class="d-inline-block" *ngIf="loggedUser">
+        <button class="btn drop-down-account" type="button" id="dropdownBasic1" ngbDropdownToggle style="display: flex">
+          <mat-icon style="margin:auto;">account_circle</mat-icon> <span style="margin: auto"> &nbsp; Hi {{loggedUser.username}} !&nbsp;</span></button>
+        <div  ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <a style="text-decoration: none; color: black" href="/account/{{loggedUser.id}}"><button ngbDropdownItem>My account</button></a>
+          <button ngbDropdownItem (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+
+  </mat-toolbar>
+</div>
+
+<router-outlet></router-outlet>
+
+<div class="row m-0 p-0" style="text-align: center; font-size: 14px; color: #3a3a3f; padding-bottom: 20px!important; padding-top: 20px!important;">
+  <div class="col-md-4" style="text-align: right"><a style="color: #3a3a3f; text-decoration: none; font-weight: normal" href="/terms-and-conditions">Terms and conditions</a><br></div>
+  <div class="col-md-4" style="text-align: center">© CodeUp 2022 - All rights reserved</div>
+  <div class="col-md-4" style="text-align: left"><a style="color: #3a3a3f; text-decoration: none" href="privacy-policy" class="link-3">Privacy policy</a><br></div>
+</div>

@@ -1,0 +1,54 @@
+<div class="container" style="max-width: 100%; min-height: 100vh; background-color: #dae0e6; padding-bottom: 20px">
+
+  <!-- followed posts -->
+  <div class="row col-md-10"style="margin: auto; padding-top: 4vh" *ngIf="searchResults && searchResults.subscribedSubredditsPosts && searchResults.subscribedSubredditsPosts.length > 0">
+    <h2>Followed forum posts</h2>
+    <div (click)="goToPost(result.post.id)" class="row" *ngFor="let result of searchResults.subscribedSubredditsPosts;" style="background-color: white; border-radius: 5px; width: 100%; margin-top: 10px; padding-top: 5px; padding-bottom: 5px; cursor: pointer">
+      <div class="col col-md-12">
+        <p style="color: #787c7e">
+          <img style="width: 30px; height:30px; border-radius: 50%" src="{{ result.userImage ? result.userImage : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+          &nbsp;
+          <a style="color: black" href="/account/{{result.post.userId}}">{{result.user }}</a> • published by {{result.user}} the {{result.post.creationDate | date :"MMM dd, YYYY"}}</p>
+        <h2>{{result.post.title}}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- random posts -->
+  <div class="row col-md-10"style="margin: auto; padding-top: 4vh" *ngIf="searchResults && searchResults.randomPosts && searchResults.randomPosts.length > 0">
+    <h2>Posts</h2>
+    <div (click)="goToPost(result.post.id)" class="row" *ngFor="let result of searchResults.randomPosts;" style="background-color: white; border-radius: 5px; width: 100%; margin-top: 10px; padding-top: 5px; padding-bottom: 5px; cursor: pointer">
+      <div class="col col-md-12">
+        <p style="color: #787c7e">
+          <img style="width: 30px; height:30px; border-radius: 50%" src="{{ result.userImage ? result.userImage : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+          &nbsp;<a style="color: black" href="/account/{{result.post.userId}}">
+          {{result.user }}</a> • published by {{result.user}} the {{result.post.creationDate | date :"MMM dd, YYYY"}}</p>
+        <h2>{{result.post.title}}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- users -->
+  <div class="row col-md-10"style="margin: auto; padding-top: 4vh" *ngIf="searchResults && searchResults.users && searchResults.users.length > 0">
+    <h2>Users</h2>
+    <div class="row" *ngFor="let result of searchResults.users;" style="background-color: white; border-radius: 5px; width: 100%; margin-top: 10px; padding-top: 5px; padding-bottom: 5px; cursor: pointer">
+      <div class="col col-md-1" (click)="goToUser(result.user.id)">
+        <img style="width: 40px; height:40px; border-radius: 50%" src="{{result.user.profilePictureUrl ? result.user.profilePictureUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+      </div>
+      <div class="col col-md-6" (click)="goToUser(result.user.id)">
+        <p>{{result.user.username}}</p>
+      </div>
+      <div class="col col-md-5" *ngIf="loggedUser">
+        <button [disabled]="!!result.friend" (click)="addFriend(result)" mat-raised-button color="accent"
+                style="background-color: #FFC500; float: right">
+          <label *ngIf="!result.friend">Add friend</label>
+          <label *ngIf="!!result.friend">{{result.accepted ? 'Your are friends' : 'Friend request sended'}}</label>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searchResults && searchResults.subscribedSubredditsPosts.length === 0 && searchResults.randomPosts.length === 0 && searchResults.users.length === 0  " class="row col-md-10" style="margin: auto; padding-top: 4vh">
+    <h2>No results available ... 😥</h2>
+  </div>
+</div>

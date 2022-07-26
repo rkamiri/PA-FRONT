@@ -1,0 +1,27 @@
+<div class="container" style="max-width: 100%; min-height: 100vh; background-color: #dae0e6; padding-bottom: 20px">
+<div style="padding-top: 40px">
+  <div class="col col-md-8" style="margin: auto; padding: 20px; background-color: white; border-radius: 5px">
+    <div>
+      <h1 access="false" id="control-5689247">Change password</h1></div>
+    <div  style="padding-top: 20px">
+      <label for="pwd">Password</label>
+      <input [disabled]="!activatedToken" [(ngModel)]="pwd" minlength="6" type="password" placeholder="Password" class="form-control" name="pwd" id="pwd" required>
+      <div class="alert-danger" *ngIf="pwd !== confirmPwd && activatedToken">Password are not similar</div>
+      <div class="alert-danger" *ngIf="disabled() && activatedToken">Password must be longer than 6 characters</div>
+      </div>
+    <div style="padding-top: 20px;">
+      <label for="pwd2">Confirm password</label>
+      <input [disabled]="!activatedToken" minlength="6" [(ngModel)]="confirmPwd" type="password" placeholder="Confirm password" class="form-control" name="pwd2" id="text-pwd2" required>
+      <div class="alert-danger" *ngIf="pwd !== confirmPwd && activatedToken">Password are not similar</div>
+      <div class="alert-danger" *ngIf="disabled() && activatedToken">Password must be longer than 6 characters</div>
+      </div>
+
+    <div style="margin-top: 20px" class="alert-danger" *ngIf="!activatedToken">Your password has already been changed</div>
+    <br>
+    <button mat-raised-button color="accent"
+            style="background-color: #FFC500; float: right" [disabled]="disabled()" (click)="changePwd()">Change my password</button>
+    <br>
+    <br>
+  </div>
+</div>
+</div>

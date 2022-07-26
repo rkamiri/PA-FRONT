@@ -1,0 +1,5 @@
+<div class="text-box">
+  <textarea autosize class="editor-area" (ngModelChange)="onTextChange($event)" [ngModel]="data.text" [placeholder]="'Enter text here...'"></textarea>
+  <button class="delete-button" (click)="destroyComponent()"><img class="delete-image-button" src="../../assets/icons/close.png" alt=""></button>
+</div>
+

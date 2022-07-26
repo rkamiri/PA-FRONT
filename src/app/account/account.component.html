@@ -1,0 +1,121 @@
+<div class="container rounded bg-white mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-3 border-right">
+      <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+        <img class="rounded-circle"
+             width="150px" height="150px"
+             src="{{user.profilePictureUrl ? user.profilePictureUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+        <div class="text-center" *ngIf="isSameUser">
+          <br>
+          <label class="mat-button mat-button-accent mat-flat" style="color: white; background-color: #FFC500;"
+                 for="file">
+            <i class="fa fa-cloud-upload"></i> Change image
+          </label>
+          <input style="display: none" type="file" name="file" id="file" (change)="onFileChanged($event)"/>
+          <br>
+        </div>
+        <span
+          class="font-weight-bold">{{user.username}}</span><span class="text-black-50" *ngIf="isSameUser">{{user.email}}
+      </span>
+        <span class="text-black-50"><br>
+            <a href="/user-posts/{{user.id}}">{{user.username}}'s posts</a>
+          </span>
+        <span> </span>
+      </div>
+    </div>
+    <div class="col-md-9 border-right">
+      <div class="p-3 py-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="text-right">Profile Settings</h4>
+        </div>
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" *ngIf="isSameUser">
+          <div class="row mt-2">
+            <div class="col-md-12"><label class="labels">Username</label>
+              <input type="text" class="form-control" placeholder="first name" formControlName="username" value="">
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6"><label class="labels">Firstname</label>
+              <input type="text" class="form-control" placeholder="first name" formControlName="firstname" value="">
+            </div>
+            <div class="col-md-6"><label class="labels">Lastname</label>
+              <input type="text" class="form-control" value="" formControlName="lastname" placeholder="last name"></div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-12"><label class="labels">Email</label>
+              <input type="text" class="form-control" value="" placeholder="last name" formControlName="email"
+                     [email]="true"></div>
+          </div>
+          <br>
+          <button type="submit" mat-raised-button color="accent"
+                  style="background-color: #FFC500; float: right"
+                  [disabled]="!userForm.valid || !enableButton()">Update my account
+          </button>
+        </form>
+        <div *ngIf="isSameUser">
+          <br>
+          <br>
+          <button *ngIf="isSameUser" (click)="changePassword()" mat-raised-button color="accent"
+                  style="background-color: #FF9600; float: right;">Change my password
+          </button>
+        </div>
+        <div *ngIf="!isSameUser">
+          <div class="row mt-2">
+            <div class="col-md-12"><label class="labels">Username</label>
+              <input [value]="user.username" type="text" class="form-control" value="" placeholder="last name"
+                     [disabled]="true"></div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6"><label class="labels">Firstname</label>
+              <input [value]="user.firstname" type="text" class="form-control" value="" placeholder="last name"
+                     [disabled]="true"></div>
+            <div class="col-md-6"><label class="labels">Lastname</label>
+              <input [value]="user.lastname" type="text" class="form-control" value="" placeholder="last name"
+                     [disabled]="true"></div>
+          </div>
+        </div>
+        <div *ngIf="!isSameUser">
+          <br>
+          <br>
+          <button [disabled]="!!isFriendData" *ngIf="!isSameUser" (click)="addFriend()" mat-raised-button color="accent"
+                  style="background-color: #FF9600; float: right;">
+            <label *ngIf="isLogged && !isFriendData">Add friend</label>
+            <label
+              *ngIf="isFriendData">{{isFriendData.isAccepted ? 'Your are friends' : 'Friend request sended' }}</label>
+          </button>
+        </div>
+
+        <div class="d-flex align-items-center mb-3" *ngIf="friendList.length > 0">
+          <h2 class="text-right" style="margin-top: 40px">Friend list</h2>
+        </div>
+        <div class="container" *ngIf="friendList.length > 0">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="people-nearby">
+                <div class="nearby-user">
+                  <div class="row" *ngFor="let friendItem of friendList" style="margin-bottom: 20px">
+                    <div class="col-md-2 col-sm-2">
+                      <img alt="user" class="profile-photo-lg"
+                           src="{{friendItem.user.profilePictureUrl ? friendItem.user.profilePictureUrl :
+                           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+                    </div>
+                    <div class="col-md-10 col-sm-7">
+                      <h2 style="display:inline;"><a href="/account/{{friendItem.user.id}}"
+                                                     class="profile-link">{{friendItem.user.username}}</a></h2>
+                      <button mat-raised-button color="accent"
+                              style="display:inline; float:right; background-color: #FF9600;"
+                              *ngIf="isSameUser && user.id === friendItem.friend.friendId && !friendItem.friend.accepted"
+                              (click)="addFriendFromList(friendItem.user.id, friendItem.friend)">Accept Friend
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

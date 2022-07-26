@@ -1,0 +1,186 @@
+<div class="container" style="max-width: 100%; min-height: 100vh; background-color: #dae0e6; padding-bottom: 20px">
+  <div class="row">
+
+    <div class="col col-md-8 white-block sort-container">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="center">
+            <mat-icon style="cursor: pointer" (click)="upvote(true)" class="{{userPostVote && userPostVote.upvote ? 'upvote' : null}}">expand_less</mat-icon>
+            <p style="margin:0">{{post.note}}</p>
+            <mat-icon style="cursor: pointer" (click)="upvote(false)" class="{{userPostVote && !userPostVote.upvote ? 'downvote' : null}}">expand_more</mat-icon>
+          </div>
+        </div>
+        <div class="col-md-10">
+          <div>
+            <a *ngIf="user" href="/account/{{user.id}}"
+               style="display: inline; font-weight: bold; color: black">
+              <img style="width: 30px; height:30px; border-radius: 50%"
+                   src="{{ user.profilePictureUrl ? user.profilePictureUrl :
+                   'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+              &nbsp;
+              {{user ? user.username : "deleted"}} . </a>
+            <p *ngIf="post" style="display: inline; color: dimgray">
+              &nbsp;&nbsp;Published {{post.creationDate | date: "MMM dd, YYYY"}}
+              <label *ngIf="!isSameDate(post.creationDate, post.lastUpdateDate)"> - Edited {{post.lastUpdateDate | date:"MMMM dd, YYYY HH:MM"}}</label>
+            </p>
+            <button *ngIf="loggedUser && loggedUser.id === post.userId" style="display: inline; float: right; background-color: #FFC500" mat-raised-button
+                    color="accent" (click)="deletePost()">Delete post</button>
+          </div>
+          <br>
+          <h2 *ngIf="post">{{post.title}}</h2>
+          <p class="tag" *ngIf="forum">{{forum.title}}</p>
+          <div *ngFor="let content of contents">
+            <div *ngIf="content.type === 0">
+              <p>{{content.content}}</p>
+            </div>
+            <div *ngIf="content.type === 1">
+              <app-code-viewer [content]="content" ></app-code-viewer>
+            </div>
+          </div>
+          <div *ngIf="post" [innerHTML]="post.content"></div>
+
+          <div style="margin-top: 4vh; display: flex">
+            <mat-icon style="display:inline-block"> comment</mat-icon>
+            <p style="display: inline-block" >&nbsp;{{commentCount ? commentCount : 0}} comments</p>
+            <mat-icon style="display:inline-block; margin-left: 2vw"> share</mat-icon>
+            <p style="display: inline-block">share this post</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col col-md-3 sort-container white-block about">
+      <h2 *ngIf="forum" style="
+         background-image: url('https://media.discordapp.net/attachments/951109231099133972/971419158505984050/doodad.png');
+         color: black;
+
+         background-color: {{forum.color}};">
+
+        <p>About this community</p></h2>
+
+      <p *ngIf="forum">{{forum.description}}</p>
+      <hr style="width: 50%; margin: auto;size: 1px">
+      <p *ngIf="forum" style="display: flex; align-content: baseline; align-items: flex-end ">
+        <mat-icon>cake</mat-icon>
+        <label> &nbsp; created {{forum.creationDate | date: "MMM dd, YYYY"}}</label></p>
+    </div>
+
+    <div class="col col-md-8 white-block sort-container">
+      <div class="container bootstrap snippets bootdey">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="blog-comment">
+              <h3 class="text-success">Comments</h3>
+              <hr/>
+              <div>
+                          <div #target class="editor-box">
+                            <div class="code-editor-box" #codeEditorBox>
+                            </div>
+                            <div class="add-content" (click)="addContent($event)">
+                              <p class="add-content-info">Click here to add content</p>
+                            </div>
+                          </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 10px">
+                  <button style="background-color: red; display: inline-block; margin-right: 5px" mat-raised-button
+                          color="accent" (click)="respondId = null; commentValue = ''; respondUsername = undefined">
+                    Cancel
+                  </button>
+                  <button style="background-color: #FFC500; display: inline-block" mat-raised-button color="accent"
+                          (click)="sendComment()" [disabled]="allContent.length <=  0">{{editMessage ? 'Edit' : 'Send'}}
+                  </button>
+                </div>
+              </div>
+              <ul class="comments">
+                <li class="clearfix" *ngFor="let item of comments">
+                  <div class="vote center">
+                    <mat-icon style="cursor: pointer" (click)="upvoteComment(true, item.comment, null)" class="{{item.comment.optionalCommentVote && item.comment.optionalCommentVote.upvote ? 'upvote' : null}}">expand_less</mat-icon>
+                    <p style="margin:0">{{item.comment.comment.note}}</p>
+                    <mat-icon style="cursor: pointer" (click)="upvoteComment(false, item.comment, null)" class="{{item.comment.optionalCommentVote && !item.comment.optionalCommentVote.upvote ? 'downvote' : null}}">expand_more</mat-icon>
+                  </div>
+                  <div class="post-comments">
+                    <p class="meta">
+                      <img style="width: 30px; height: 30px; border-radius: 50%" src="{{ item.comment.user.profilePictureUrl ? item.comment.user.profilePictureUrl :
+                   'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}" class="avatar" alt="">
+                      &nbsp;&nbsp;
+                      {{item.comment.comment.creationDate | date: "MMM dd, YYYY"}} <a
+                      href="/account/{{item.comment.user.id}}">{{item.comment.user.username}}</a> says : <i
+                      class="pull-right"><a style="color: #82b440; cursor: pointer;"
+                                            (click)="scrollToElement(target); respondId = item.comment.comment.id; respondUsername = item.comment.user.username"><small>Reply</small></a></i>
+                      <label style="float: right">
+                        <small style="cursor: pointer; color: cornflowerblue"
+                               *ngIf="loggedUser && item.comment.user.id === loggedUser.id"
+                               (click)="scrollToElement(target); editSetup(item.comment.comment)">edit</small> &nbsp;
+                        <small style="cursor: pointer; color: red"
+                               *ngIf="loggedUser && item.comment.user.id === loggedUser.id"
+                               (click)="deleteComment(item.comment.comment.id)">delete</small>
+                      </label> </p>
+                    <p>
+                      {{item.comment.comment.content}}
+                    </p>
+
+                    <div *ngFor="let content of item.comment.contents">
+                      <div *ngIf="content.type === 0">
+                        <p>{{content.content}}</p>
+                      </div>
+                      <div *ngIf="content.type === 1">
+                        <app-code-viewer [content]="content" ></app-code-viewer>
+                      </div>
+                    </div>
+
+                  </div>
+                  <ul class="comments" *ngFor="let response of item.responses">
+                    <li class="clearfix">
+                      <div class="vote center">
+                        <mat-icon style="cursor: pointer" (click)="upvoteComment(true, response, item.comment.comment.id)" class="{{response.optionalCommentVote && response.optionalCommentVote.upvote ? 'upvote' : null}}">expand_less</mat-icon>
+                        <p style="margin:0">{{response.comment.note}}</p>
+                        <mat-icon style="cursor: pointer" (click)="upvoteComment(false, response, item.comment.comment.id)" class="{{response.optionalCommentVote && !response.optionalCommentVote.upvote ? 'downvote' : null}}">expand_more</mat-icon>
+                      </div>
+                      <div class="post-comments" style="margin-left: 14%">
+                        <p class="meta">
+                          <img style="width: 30px; height: 30px; border-radius: 50%" src="{{ response.user.profilePictureUrl ? response.user.profilePictureUrl :
+                   'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}" class="avatar" alt="">
+                          &nbsp;&nbsp;{{response.comment.creationDate | date: "MMM dd, YYYY"}} <a
+                          href="#">{{response.user.username}}</a> says :
+                          <i class="pull-right"><a
+                            (click)="scrollToElement(target); respondId = item.comment.comment.id; respondUsername = response.user.username"><small>Reply</small></a></i>
+                        <label style="float: right">
+                          <small style="cursor: pointer; color: cornflowerblue"
+                                 *ngIf="loggedUser && response.user.id === loggedUser.id"
+                                 (click)="scrollToElement(target); editSetup(response.comment)">edit</small> &nbsp;
+                          <small style="cursor: pointer; color: red"
+                                 *ngIf="loggedUser && response.user.id === loggedUser.id"
+                                 (click)="deleteComment(response.comment.id)">delete</small>
+                        </label> </p>
+                        <p>
+                          {{response.comment.content}}
+                        </p>
+                        <div *ngFor="let content of response.contents">
+                          <div *ngIf="content.type === 0">
+                            <p>{{content.content}}</p>
+                          </div>
+                          <div *ngIf="content.type === 1">
+                            <app-code-viewer [content]="content" ></app-code-viewer>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-3 sort-container white-block about">
+    </div>
+  </div>
+</div>
+
+<div class="code-text-selector d-flex" #addContentDiv>
+  <button class="add-text-button" mat-button (click)="addText()">Text</button>
+  <button class="add-code-button" mat-button (click)="addCode()">Code</button>
+  <div class="arrow-down"></div>
+</div>

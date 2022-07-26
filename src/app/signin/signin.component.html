@@ -1,0 +1,133 @@
+<mat-dialog-content>
+<div class="col-md-12" style="overflow: auto!important;">
+  <div>
+    <img
+      id="profile-img"
+      src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+      class="profile-img-card"
+      style="border-radius: 100%"
+    />
+    <br>
+    <br>
+    <form
+      *ngIf="!isSuccessful"
+      name="form"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      #f="ngForm"
+      class="example-form"
+      novalidate
+    >
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput
+               type="text"
+               name="username"
+               [(ngModel)]="form.username"
+               required
+               minlength="3"
+               maxlength="20"
+               #username="ngModel"
+        >
+        <div class="alert-danger" *ngIf="usernameExists">Username is already registered</div>
+        <div class="alert-danger" *ngIf="username && username.errors && form.username.length > 0">
+          <div *ngIf="username.errors['required']">Username is required</div>
+          <div *ngIf="username.errors['minlength']">
+            Username must be at least 3 characters
+          </div>
+          <div *ngIf="username.errors['maxlength']">
+            Username must be at most 20 characters
+          </div>
+        </div>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Firstname</mat-label>
+        <input matInput
+               type="text"
+               name="username"
+               [(ngModel)]="form.firstname"
+               required
+               minlength="3"
+               maxlength="20"
+               #firstname="ngModel"
+        >
+        <div class="alert-danger" *ngIf="firstname && firstname.errors && form.firstname.length > 0">
+          <div *ngIf="firstname.errors['required']">Firstname is required</div>
+          <div *ngIf="firstname.errors['minlength']">
+            Firstname must be at least 3 characters
+          </div>
+          <div *ngIf="firstname.errors['maxlength']">
+            Firstname must be at most 20 characters
+          </div>
+        </div>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Lastname</mat-label>
+        <input matInput
+               type="text"
+               name="username"
+               [(ngModel)]="form.lastname"
+               required
+               minlength="3"
+               maxlength="20"
+               #lastname="ngModel"
+        >
+        <div class="alert-danger" *ngIf="lastname && lastname.errors && form.lastname.length > 0">
+          <div *ngIf="lastname.errors['required']">Lastname is required</div>
+          <div *ngIf="lastname.errors['minlength']">
+            Lastname must be at least 3 characters
+          </div>
+          <div *ngIf="lastname.errors['maxlength']">
+            Lastname must be at most 20 characters
+          </div>
+        </div>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput
+               type="email"
+               name="email"
+               [(ngModel)]="form.email"
+               required
+               email
+               #email="ngModel"
+        >
+        <div class="alert-danger" *ngIf="emailExists">Email is already registered</div>
+
+        <div class="alert-danger" *ngIf="email && email.errors && form.email.length > 0">
+          <div *ngIf="email.errors['required']">Email is required</div>
+          <div *ngIf="email.errors['email']">
+            Email must be a valid email address
+          </div>
+        </div>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput
+               type="password"
+               name="password"
+               [(ngModel)]="form.password"
+               required
+               minlength="6"
+               #password="ngModel"
+        >
+        <div class="alert-danger" *ngIf="password && password.errors && form.password.length > 0">
+          <div *ngIf="password.errors['required']">Password is required</div>
+          <div *ngIf="password.errors['minlength']">
+            Password must be at least 6 characters
+          </div>
+        </div>
+      </mat-form-field>
+      <br>
+      <div class="form-group">
+        <button style="background-color: #FFC500;" mat-raised-button color="accent" [disabled]="disabled()
+        || !!firstname.errors || !!lastname.errors || !!this.email.errors || !!this.username.errors
+        || !!password.errors">Sign Up</button>
+      </div>
+    </form>
+  </div>
+</div>
+</mat-dialog-content>

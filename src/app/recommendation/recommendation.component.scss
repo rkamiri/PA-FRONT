@@ -1,0 +1,19 @@
+.recommendation-title {
+  width: 100%;
+  padding: 25px;
+  padding-left: 5px;
+  background-color: #e5e5f7;
+  color: white;
+  opacity: 0.8;
+  background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #ccb853 10px ), repeating-linear-gradient( rgba(231, 168, 22, 0.33), #7a0a24);
+}
+
+.item {
+  margin-left: 5px;
+  margin-bottom: 25px;
+}
+
+.item a {
+  text-decoration: none;
+  color: black;
+}

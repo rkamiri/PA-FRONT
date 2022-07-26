@@ -1,0 +1,16 @@
+<div>
+  <h1 class="recommendation-title">Community recommendations</h1>
+  <p class="item" *ngFor="let forum of forums; let index = index;">
+    <a href="/forum/{{forum.id}}">{{index + 1}} - &nbsp;<img
+    style="width: 30px; border-radius: 100%"
+    src="https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"> &nbsp;{{forum.title}}</a>&nbsp;
+    <button *ngIf="!joinnedForums.includes(forum.id) && !!isUserLogged" style="background-color: #FFC500; border-radius: 60px; padding: 0; float: right; margin-right: 20px"
+            mat-raised-button color="accent" (click)="joinForum(forum.id)">Join
+    </button>
+  </p>
+  <button
+    style="background-color: #FFC500; border-radius: 60px; padding: 0; width: 90%; display: block; margin: auto; margin-bottom: 10px"
+    mat-raised-button color="accent"
+    *ngIf="loadMore" (click)="getMore()">Show more
+  </button>
+</div>

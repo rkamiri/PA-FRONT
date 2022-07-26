@@ -1,0 +1,65 @@
+<div class="container top-container" style="background-color: white">
+  <div class="row">
+    <a href="/account/{{user ? user.id : ''}}" style="color: black;">
+    <div class="col col-md-8" style="margin: auto; margin-top: 2vh; margin-bottom: 2vh; padding: 0">
+      <img style="max-width: 10vw;  height:10vw; border-radius: 100%; margin-top: 10px; display: inline"
+           src="{{user && user.profilePictureUrl ? user.profilePictureUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+      <h1 style=" display: inline; margin-left: 2vw">{{user && user.username}}</h1>
+      <button *ngIf="loggedUser" style="display: inline; margin-left: 2vw; background-color: #FFC500" mat-raised-button
+              color="accent">{{ 1 === 1 ? 'Quit' : 'Join'}}</button>
+    </div>
+    </a>
+  </div>
+</div>
+
+<div class="container" style="max-width: 100%; min-height: 100vh; background-color: #dae0e6; padding-bottom: 20px">
+  <div class="row">
+    <div class="col-md-8"style="margin: auto">
+      <div class="col col-md-12 sort-container white-block">
+        <p class="dark-text" style="margin: auto; padding-bottom: 10px">Popular posts</p>
+
+        <button class="sort {{isSelected('Popular')}}" (click)="select('Popular')" mat-raised-button color="accent">
+          <mat-icon> bar_chart</mat-icon>
+          Popular
+        </button>
+        <button class="sort {{isSelected('New')}}" (click)="select('New')" mat-raised-button color="accent">
+          <mat-icon>new_releases</mat-icon>
+          New
+        </button>
+      </div>
+      <div class="col col-md-12" *ngFor="let post of posts">
+        <div class="white-block sort-container">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="center">
+                <mat-icon style="{{post.hasUpvote && post.upvote ? 'color: red' : ''}}" (click)="upvote(true, post)">
+                  expand_less
+                </mat-icon>
+                <p style="margin:0">{{post.post.note}}</p>
+                <mat-icon style="{{ post.hasUpvote && !post.upvote ? 'color: #FFC500' : ''}}"
+                          (click)="upvote(false, post)">expand_more
+                </mat-icon>
+              </div>
+            </div>
+            <div class="col-md-10" style="cursor:pointer;" (click)="goToPost(post.post.id)">
+              <div>
+                <img style="display: inline; width: 30px; height: 30px; border-radius: 50%" src="{{post.userImage ? post.userImage :
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png'}}">
+                <p style="display: inline; font-weight: bold">&nbsp;&nbsp;{{post.user}}</p>
+                <p style="display: inline; color: dimgray">
+                  &nbsp;&nbsp;Published {{post.post.creationDate | date: "MMM dd, YYYY HH:MM"}}<label
+                  *ngIf="!isSameDate(post.post.creationDate, post.post.lastUpdateDate)"> -
+                  Edited {{post.post.lastUpdateDate | date:"MMMM dd, YYYY HH:MM"}}</label></p>
+              </div>
+              <br>
+              <h2>{{post.post.title}}</h2>
+              <p class="tag" style="background-color: {{post.forumBgColor}}">{{post.forum}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-3 sort-container white-block about" style="background-color: transparent">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

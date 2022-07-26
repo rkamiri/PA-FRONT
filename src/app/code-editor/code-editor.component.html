@@ -1,0 +1,26 @@
+<div class="code-editor-box">
+  <div class="select-delete-box">
+    <select #languageSelector [ngModel]="data.language" (ngModelChange)="onLanguageChange($event)" class="language-selector">
+      <option value="" disabled>Choose a language</option>
+      <option *ngFor="let language of languages" [value]="language.value">{{language.name}}</option>
+    </select>
+    <button class="delete-button" (click)="destroyComponent()"><img class="delete-image-button" src="../../assets/icons/close.png" alt=""></button>
+  </div>
+
+
+  <div class="input-box">
+
+  <textarea autosize class="text-code-editor" (ngModelChange)="onCodeChange($event)" [ngModel]="data.code" rows="0" column="0" wrap="off" (keydown.Tab)="tabIndentation()" tabindex="-1" #codeEditor></textarea>
+  </div>
+
+  <div class="output-box">
+    <button class="run-button" (click)="runCode(codeEditor.value)">
+      <img class="run-image-button" src="../../assets/icons/play.png" alt="">
+    </button>
+    <div class="output-text" [innerHTML]="output">
+    </div>
+  </div>
+</div>
+
+
+

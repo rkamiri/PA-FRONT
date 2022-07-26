@@ -1,0 +1,28 @@
+<form class="example-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Username</mat-label>
+    <input matInput
+           type="text"
+           formControlName="username"
+           placeholder="Username"
+    >
+  </mat-form-field>
+  <br>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Password</mat-label>
+    <input matInput
+           type="password"
+           formControlName="password"
+           placeholder="Username"
+    >
+  </mat-form-field>
+  <br>
+  <button
+    style="background-color: #FFC500" mat-raised-button color="accent"
+
+    [disabled]="!loginForm.valid"
+  >
+    Submit
+  </button>
+</form>
+<a href="/user-lost-password">Lost your password ?</a>

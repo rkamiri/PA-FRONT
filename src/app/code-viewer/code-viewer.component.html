@@ -1,0 +1,13 @@
+<div class="code-editor-box">
+  <div class="input-box">
+  <div class="text-code-editor" rows="0" column="0" wrap="off"  tabindex="-1" #codeEditor>{{content.content}}</div>
+  </div>
+
+  <div class="output-box">
+    <button class="run-button" (click)="runCode(codeEditor.innerHTML)">
+      <img class="run-image-button" src="../../assets/icons/play.png" alt="">
+    </button>
+    <div class="output-text" [innerHTML]="output">
+    </div>
+  </div>
+</div>

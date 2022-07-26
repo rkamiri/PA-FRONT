@@ -1,0 +1,74 @@
+@use '../../style/colors'
+@use '../../style/size'
+
+.code-editor-box
+  margin: 10px 0px 10px 0px
+  height: 100%
+  display: flex
+  flex-direction: column
+
+.input-box
+  width: 100%
+  height: 70%
+
+.text-code-editor
+  color: colors.$font-white
+  width: 100%
+  height: 100%
+  min-height: 100px
+  resize: none
+  border: none
+  border-bottom: 2px solid colors.$sonic-silver
+  outline: none
+  background-color: colors.$raisin-black
+  border-radius: 10px 10px 0px 0px
+
+.output-box
+  margin-top: -5px !important
+  height: 30%
+  background-color: colors.$raisin-black
+  border-radius: 0px 0px 10px 10px
+
+.run-button
+  background: none
+  border: none
+
+.run-image-button
+  width: size.$button-run-ratio
+  height: size.$button-run-ratio
+
+.delete-button
+  align-self: flex-end
+  position: relative
+  top: 20px
+  background: none
+  border: none
+
+.delete-image-button
+  width: 15px
+  height:15px
+
+
+.language-selector
+  background: none
+  border: none
+  align-self: flex-end
+  position: relative
+  top: 20px
+  color: #fff
+  background-color: colors.$raisin-black
+
+
+.select-delete-box
+  display: flex
+  flex-direction: row
+  justify-content: flex-end
+
+.output-text
+  height: 50px
+  color: colors.$font-white
+
+  padding: 0px 5px 0px 5px
+
+
+
