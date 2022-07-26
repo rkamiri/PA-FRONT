@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         this.userService.emitAuthStatus(true);
         this.dialogRef.close();
         setTimeout(() => {
-          location.reload();
+          //location.reload();
         }, 1000);
       },
       (error) => {
