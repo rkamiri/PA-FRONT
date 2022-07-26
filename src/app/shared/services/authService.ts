@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {User} from "../entities/User";
 import { environment } from '../../../environments/environment';
@@ -18,9 +18,16 @@ export class AuthService {
   }
 
   login(value: object): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+
+      withCredentials: true,
+      observe: 'response' as 'response'
+    };
     return this.httpclient.post<any>(
       this.API_URL + 'login',
-        value
+        value,
+      httpOptions
     );
   }
 
